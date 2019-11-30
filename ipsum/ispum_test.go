@@ -13,7 +13,7 @@ type testCase struct {
 	startLorem bool
 }
 
-func TestGeneratation(t *testing.T) {
+func TestGeneration(t *testing.T) {
 	t.Run("one word", func(t *testing.T) {
 		expected := 1
 		str, stats := runGenerator(t, testCase{words, expected, false})
