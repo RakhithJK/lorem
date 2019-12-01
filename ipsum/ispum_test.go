@@ -22,6 +22,10 @@ func TestGeneration(t *testing.T) {
 		if stats.WordCount != wCount {
 			t.Errorf("Expected count of words to be %d, got: %d", expected, wCount)
 		}
+
+		if !strings.HasSuffix(str, ".\n") {
+			t.Errorf("Last element should be %q", ".\n")
+		}
 	})
 
 	t.Run("three words", func(t *testing.T) {
@@ -31,6 +35,10 @@ func TestGeneration(t *testing.T) {
 		wCount := len(strings.Fields(str))
 		if stats.WordCount != wCount {
 			t.Errorf("Expected count of words to be %d, got: %d", expected, wCount)
+		}
+
+		if !strings.HasSuffix(str, ".\n") {
+			t.Errorf("Last element should be %q", ".\n")
 		}
 	})
 
@@ -51,6 +59,10 @@ func TestGeneration(t *testing.T) {
 		if stats.ParagraphCount != realParagraphCount {
 			t.Errorf("Expected count of paragraphs to be %d, got: %d", expectedParagraphs, stats.ParagraphCount)
 		}
+
+		if !strings.HasSuffix(str, ".\n") {
+			t.Errorf("Last element should be %q", ".\n")
+		}
 	})
 
 	t.Run("start with lorem and one word ahead", func(t *testing.T) {
@@ -69,6 +81,10 @@ func TestGeneration(t *testing.T) {
 		expectedParagraphs := 1
 		if stats.ParagraphCount != realParagraphCount {
 			t.Errorf("Expected count of paragraphs to be %d, got: %d", expectedParagraphs, stats.ParagraphCount)
+		}
+
+		if !strings.HasSuffix(str, ".\n") {
+			t.Errorf("Last element should be %q", ".\n")
 		}
 	})
 
@@ -90,6 +106,10 @@ func TestGeneration(t *testing.T) {
 		if stats.ByteCount != expectedBytes {
 			t.Errorf("Expected count of bytes to be %d, got: %d", expectedBytes, stats.ByteCount)
 		}
+
+		if !strings.HasSuffix(str, ".\n") {
+			t.Errorf("Last element should be %q", ".\n")
+		}
 	})
 
 	t.Run("generate 5 paragraphs", func(t *testing.T) {
@@ -101,6 +121,10 @@ func TestGeneration(t *testing.T) {
 		if stats.ParagraphCount != realParag {
 			t.Errorf("Expected count of paragraphs to be %d, got: %d", expectedParagraphs, realParag)
 		}
+
+		if !strings.HasSuffix(str, ".\n") {
+			t.Errorf("Last element should be %q", ".\n")
+		}
 	})
 
 	t.Run("generate >=404 bytes", func(t *testing.T) {
@@ -110,6 +134,10 @@ func TestGeneration(t *testing.T) {
 
 		if stats.ByteCount < expectedBytes {
 			t.Errorf("Expected count of bytes to be %d, got: %d", expectedBytes, len(str))
+		}
+
+		if !strings.HasSuffix(str, ".\n") {
+			t.Errorf("Last element should be %q", ".\n")
 		}
 	})
 }

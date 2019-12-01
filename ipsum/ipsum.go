@@ -57,6 +57,10 @@ func (l *LoremIpsum) Generate() error {
 			return err
 		}
 		if l.limiter.limitReached() {
+			l.limiter.addParagraph()
+			if err := l.print("\n"); err != nil {
+				return err
+			}
 			return nil
 		}
 	}
