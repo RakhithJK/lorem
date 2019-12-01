@@ -47,7 +47,6 @@ func TestGeneration(t *testing.T) {
 		}
 
 		realParagraphCount := strings.Count(str, "\n")
-		realParagraphCount++
 		expectedParagraphs := 1
 		if stats.ParagraphCount != realParagraphCount {
 			t.Errorf("Expected count of paragraphs to be %d, got: %d", expectedParagraphs, stats.ParagraphCount)
@@ -67,7 +66,6 @@ func TestGeneration(t *testing.T) {
 		}
 
 		realParagraphCount := strings.Count(str, "\n")
-		realParagraphCount++
 		expectedParagraphs := 1
 		if stats.ParagraphCount != realParagraphCount {
 			t.Errorf("Expected count of paragraphs to be %d, got: %d", expectedParagraphs, stats.ParagraphCount)
@@ -88,7 +86,7 @@ func TestGeneration(t *testing.T) {
 			t.Errorf("Expected count of paragraphs to be %d, got: %d", expectedParagraphs, stats.ParagraphCount)
 		}
 
-		expectedBytes := 455
+		expectedBytes := 456
 		if stats.ByteCount != expectedBytes {
 			t.Errorf("Expected count of bytes to be %d, got: %d", expectedBytes, stats.ByteCount)
 		}
@@ -99,7 +97,6 @@ func TestGeneration(t *testing.T) {
 
 		str, stats := runGenerator(t, testCase{paragraphs, expectedParagraphs, false})
 		realParag := strings.Count(str, "\n")
-		realParag++
 
 		if stats.ParagraphCount != realParag {
 			t.Errorf("Expected count of paragraphs to be %d, got: %d", expectedParagraphs, realParag)

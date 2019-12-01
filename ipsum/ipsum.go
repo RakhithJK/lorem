@@ -29,6 +29,10 @@ import (
 	"strings"
 )
 
+func getWord() string {
+	return dictionary[rand.Intn(len(dictionary))]
+}
+
 // LoremIpsum is a struct that holds lorem ipsum generator
 type LoremIpsum struct {
 	startLorem bool
@@ -41,7 +45,7 @@ func New(w io.Writer, s bool, o Option, v int) *LoremIpsum {
 	return &LoremIpsum{
 		w:          w,
 		startLorem: s,
-		limiter:    limiter{option: o, value: v, paragraphCount: 1},
+		limiter:    limiter{option: o, value: v},
 	}
 }
 
@@ -57,54 +61,30 @@ func (l *LoremIpsum) Generate() error {
 		}
 	}
 
-	beginning := true
-	var previousWord string
-	for {
-		w := l.getNextWord(&previousWord)
+	capitalize := true
+	for !l.limiter.limitReached() {
+		l.printWord(capitalize)
 
-		if beginning {
-			beginning = false
-			if err := l.printf("%s", strings.Title(w)); err != nil {
-				return err
-			}
-		} else {
-			if err := l.print(w); err != nil {
-				return err
-			}
+		var err error
+		var isParagraph bool
+		capitalize, isParagraph, err = l.printPunctuation()
+		if err != nil {
+			return fmt.Errorf("failed to print sign: %w", err)
 		}
-
-		if l.limiter.limitReached() {
-			if err := l.print("."); err != nil {
-				return err
-			}
-			break
-		}
-
-		if rand.Float32() >= 0.90 {
-			if err := l.print(", "); err != nil {
-				return err
-			}
+		if isParagraph {
 			continue
 		}
 
-		if rand.Float32() >= 0.90 {
-			beginning = true
-			if err := l.print(". "); err != nil {
+		if !l.limiter.limitReached() {
+			if err := l.print(" "); err != nil {
 				return err
 			}
-			continue
 		}
+	}
 
-		if rand.Float32() >= 0.98 {
-			beginning = true
-			l.limiter.addParagraph()
-			if err := l.print(".\n"); err != nil {
-				return err
-			}
-			continue
-		}
-
-		if err := l.print(" "); err != nil {
+	if l.limiter.option != paragraphs {
+		l.limiter.addParagraph()
+		if err := l.print(".\n"); err != nil {
 			return err
 		}
 	}
@@ -112,14 +92,49 @@ func (l *LoremIpsum) Generate() error {
 	return nil
 }
 
-func (l *LoremIpsum) getNextWord(prev *string) string {
+func (l *LoremIpsum) printWord(capitalized bool) error {
 	l.limiter.addWord()
-	w := dictionary[rand.Intn(len(dictionary))]
-	for *prev == w {
-		w = dictionary[rand.Intn(len(dictionary))]
+	w := getWord()
+
+	if capitalized {
+		if err := l.printf("%s", strings.Title(w)); err != nil {
+			return err
+		}
+
+		return nil
 	}
 
-	return w
+	if err := l.print(w); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (l *LoremIpsum) printPunctuation() (beginning bool, isParagraph bool, err error) {
+	if rand.Float32() >= 0.90 {
+		if err := l.print(","); err != nil {
+			return false, false, err
+		}
+		return
+	}
+
+	if rand.Float32() >= 0.90 {
+		if err := l.print("."); err != nil {
+			return false, false, err
+		}
+		return true, false, nil
+	}
+
+	if rand.Float32() >= 0.98 {
+		l.limiter.addParagraph()
+		if err := l.print(".\n"); err != nil {
+			return false, false, err
+		}
+		return true, true, nil
+	}
+
+	return
 }
 
 func (l *LoremIpsum) print(a string) error {
