@@ -31,7 +31,7 @@ Bytes      2808
 Paragraphs 5
 
 $ cat text.txt
-...
+# 5 paragraphs of generated Lorem Ipsum
 
 $ lorem -type w -number 3
 Nequefusce per elitvivamus.
