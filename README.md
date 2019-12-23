@@ -1,7 +1,10 @@
 # lorem: Lorem Ipsum generator
 
+[![License](https://img.shields.io/github/license/skibish/lorem)](https://github.com/skibish/lorem/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/skibish/lorem)](https://github.com/skibish/lorem/releases)
 [![GoDoc](https://godoc.org/github.com/skibish/lorem?status.svg)](https://godoc.org/github.com/skibish/lorem)
-[![Go Report Card](https://goreportcard.com/badge/github.com/skibish/lorem)](https://goreportcard.com/report/github.com/skibish/lorem)
+[![Go Report](https://goreportcard.com/badge/github.com/skibish/lorem)](https://goreportcard.com/report/github.com/skibish/lorem)
+[![Go Lang](https://img.shields.io/github/go-mod/go-version/skibish/lorem)](https://golang.org)
 
 Offline Lorem Ipsum generator.
 Inspired by [lipsum.com](https://www.lipsum.com).
